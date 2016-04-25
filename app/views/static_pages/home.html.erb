@@ -1,13 +1,43 @@
-<div class="center hero-unit">
-  <h1>Welcome to the Sample App</h1>
+<!-- Micropost Create View -->
 
-  <h2>
-  This is the home page for  the
-    <a href="http://railstutorial.jp/">Ruby on Rails Tutorial</a>
-  sample application.
-  </h2>
+<!-- user already login -->
+<% if signed_in? %>
+  <div class="row">
+    <aside class="span4">
+      <section>
+        <!-- return "userInformation" -->
+        <%= render 'shared/user_info' %>
+      </section>
+      <section>
+        <!-- return "MicropostForm" -->
+        <%= render 'shared/micropost_form' %>
+      </section>
+    </aside>
 
-  <%= link_to "Sign up now!", signup_path , class:"btn btn-large btn-primary" %>
-</div>
+    <div class="span8">
+      <h3>Micropost Feed</h3>
+      <!-- return "Feed" -->
+      <%= render 'shared/feed' %>
+    </div><!--span8_end -->
 
-<%= link_to image_tag("rails.png", alt: "Rails"), 'http://rubyonrails.org/' %>
+  </div><!-- row_end -->
+
+<!-- user don't login yet -->
+<% else %>
+  <div class="center hero-unit">
+    <h1>Welcome to the Sample App</h1>
+
+    <h2>
+    This is the home page for the
+      <a href="http://railstutorial.jp/">Ruby on Rails Tutorial</a>
+    sample application.
+    </h2>
+
+    <%= link_to "Sign up now!", signup_path,
+                                class: "btn btn-large btn-primary" %>
+  </div><!-- center hero-unit_end -->
+
+  <!-- View "rails.png" -->
+  <%= link_to image_tag("rails.png", alt: "Rails"), 'http://rubyonrails.org/' %>
+
+<% end %>

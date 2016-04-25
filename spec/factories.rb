@@ -9,4 +9,10 @@ FactoryGirl.define do
       admin true
     end
   end
+
+  # "user" association with FactoryGirl
+  factory :micropost do
+    content "Lorem ipsum"
+    user
+  end
 end

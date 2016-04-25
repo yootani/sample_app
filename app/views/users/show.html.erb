@@ -1,3 +1,4 @@
+<!-- prpfile_view -->
 <% provide(:title, @user.name) %>
 <div class="row">
   <aside class="span4">
@@ -8,4 +9,16 @@
       </h1>
     </section>
   </aside>
+
+  <!-- micropost_view  (single : ../views/microposts/_micropost.html.erb) -->
+  <div class="span8">
+    <% if @user.microposts.any? %>
+      <h3>Microposts (<%= @user.microposts.count %>) </h3> <!-- Microposts counting -->
+      <ol class="microposts">
+        <%= render @microposts %> <!-- microposts main code -->
+      </ol>
+      <%= will_paginate @microposts %> <!-- pagenation code(@microposts) -->
+    <% end %>
+  </div><!-- micropost_end -->
+
 </div>

@@ -46,20 +46,29 @@ class UsersController < ApplicationController
     redirect_to users_url
   end
 
+  # Micropost Instance
+  def show
+    @user = User.find(params[:id])
+    #target micropost page by "MicropostAssosiation"
+    @microposts = @user.microposts.paginate(page: params[:page])
+  end
+
   private
 
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation)
+      params.require(:user).permit(:name, :email, :password , :password_confirmation)
     end
 
     # Before actions
 
-    def signed_in_user
-      unless signed_in?
-        store_location
-        redirect_to signin_url, notice: "Please sign in."
-      end
-    end
+    #---DEL(Chap10.3.)-- Method"signe_in_user" add to "sessions_helper"
+    #def signed_in_user
+    #  unless signed_in?
+    #    store_location
+    #    redirect_to signin_url, notice: "Please sign in."
+    #  end
+
+    #end
 
     def correct_user
       @user = User.find(params[:id])

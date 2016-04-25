@@ -21,8 +21,17 @@ module SessionsHelper
     @current_user ||= User.find_by(remember_token: remember_token)
   end
 
+  # if curernt_user is true
   def current_user?(user)
     user == current_user
+  end
+
+  # if user is not logined (micropostMethod)
+  def signed_in_user
+    unless signed_in?
+      store_location
+      redirect_to signin_url, notice: "Please sign in."
+    end
   end
 
   def sign_out
@@ -38,4 +47,5 @@ module SessionsHelper
   def store_location
     session[:return_to] = request.url
   end
+
 end
