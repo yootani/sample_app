@@ -1,9 +1,24 @@
 SampleApp::Application.routes.draw do
-  #get "users/new"
-  resources :users
+
+  resources :users do
+    member do
+      # URL : /users/1/following, /users/1/followers
+      get :following, :followers
+    end
+
+    #untargetting user when view all members
+    collection do
+      get:tigers
+    end
+
+  end
+
+
   resources :sessions, only: [:new, :create, :destroy]
   #micropost rooting
   resources :microposts, only: [:create, :destroy]
+  #Relationship rooting
+  resources :relationships, only: [:create, :destroy]
 
 
   root  'static_pages#home'

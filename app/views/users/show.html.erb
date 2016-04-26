@@ -1,17 +1,27 @@
-<!-- prpfile_view -->
+<!-- view prpfile -->
+
 <% provide(:title, @user.name) %>
 <div class="row">
   <aside class="span4">
     <section>
       <h1>
+        <!-- view username from gravatar -->
         <%= gravatar_for @user %>
         <%= @user.name %>
       </h1>
+    </section>
+    <!-- follow statisic -->
+    <section>
+      <%= render 'shared/stats' %>
     </section>
   </aside>
 
   <!-- micropost_view  (single : ../views/microposts/_micropost.html.erb) -->
   <div class="span8">
+
+    <!-- view follow button -->
+    <%= render 'follow_form' if signed_in? %>
+
     <% if @user.microposts.any? %>
       <h3>Microposts (<%= @user.microposts.count %>) </h3> <!-- Microposts counting -->
       <ol class="microposts">
@@ -21,4 +31,4 @@
     <% end %>
   </div><!-- micropost_end -->
 
-</div>
+</div><!-- row_end -->

@@ -23,6 +23,16 @@ describe User do
   it { should respond_to(:microposts) }
   it { should respond_to(:feed) }
 
+  # Relation: usesr(followed) associated with user(follower)
+  it { should respond_to(:relationships) }
+  it { should respond_to(:followed_users) }
+  it { should respond_to(:reverse_relationships) }
+  it { should respond_to(:followers) }
+  it { should respond_to(:following?) }
+  it { should respond_to(:follow!) }
+  it { should respond_to(:unfollow!) }
+
+
   it{ should be_valid }
   it{ should_not be_admin }
 
@@ -42,13 +52,10 @@ describe User do
   #    before { @user.name = " " }
   #    it { should_not be_valid }
 
-
   describe "when name is too long" do
     before { @user.name = "a" * 51 }
     it { should_not be_valid }
   end
-
-
 
   describe "when email format is invalid" do
     it "should be invalid" do
@@ -71,9 +78,10 @@ describe User do
     end
   end
 
-
+  # input email already used
   describe "when email address is already taken" do
     before do
+      # email coppy to '@user'
       user_with_same_email = @user.dup
       user_with_same_email.email = @user.email.upcase
       user_with_same_email.save
@@ -135,17 +143,60 @@ describe User do
     end
 
     #[PROT]StatusFeed test
+    #[FINALLY]StatusFeed test (Chap11.3.1)
     describe "status" do
       let(:unfollowed_post) do
         FactoryGirl.create(:micropost, user: FactoryGirl.create(:user))
+      end
+      let(:followed_user) { FactoryGirl.create(:user) }
+
+      before do
+        @user.follow!(followed_user)
+        3.times { followed_user.microposts.create!(content: "Lorem Ipsum") }
       end
 
       # "feed" (app/model/user.rb)
       its(:feed) { should include(newer_micropost) }
       its(:feed) { should include(older_micropost) }
       its(:feed) { should_not include(unfollowed_post) }
+      its(:feed) do
+        followed_user.microposts.each do |micropost|
+          should include(micropost)
+        end
+      end
 
+    end # status end
+
+  end #micropost associated end
+
+  describe "following" do
+    let(:other_user) { FactoryGirl.create(:user) }
+    before do
+      @user.save
+      #[follow!]Method called "create!" , 'followed' Relation generate
+      @user.follow!(other_user)
     end
 
-  end
+    it { should be_following(other_user) }
+    its(:followed_users) { should include(other_user) }
+
+    # reverse_relationships test
+    describe "followed user" do
+      #'subject' is using, target change 'other_user' by '@user'
+      subject { other_user }
+      its(:followers) { should include(@user) }
+    end
+
+
+    #user unfollowing test
+    describe "and unfollowing" do
+      before { @user.unfollow!(other_user) }
+
+      it { should_not be_following(other_user) }
+      its(:followed_users){ should_not include(other_user) }
+    end
+
+  end # following end
+
+
 end

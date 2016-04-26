@@ -4,12 +4,18 @@
 <% if signed_in? %>
   <div class="row">
     <aside class="span4">
+      <!-- return "userInformation" -->
       <section>
-        <!-- return "userInformation" -->
         <%= render 'shared/user_info' %>
       </section>
+
+      <!-- return follow statisic -->
       <section>
-        <!-- return "MicropostForm" -->
+        <%= render 'shared/stats' %>
+      </section>
+
+      <!-- return "MicropostForm" -->
+      <section>
         <%= render 'shared/micropost_form' %>
       </section>
     </aside>

@@ -2,7 +2,7 @@ class MicropostsController < ApplicationController
   before_action :signed_in_user, only: [:create, :destroy]
   before_action :correct_user,   only: :destroy
 
-  # nonSignedInUser can access
+  #-- nonSignedInUser can access
   #def index
   #end
 

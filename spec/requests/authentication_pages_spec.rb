@@ -115,8 +115,35 @@ describe "Authentication" do
           before { visit users_path }
           it { should have_title('Sign in') }
         end
-      end
 
+        # follow user page test ##
+        describe "visiting the following page" do
+          before { visit following_user_path(user) }
+          it { should have_title('Sign in') }
+        end
+
+        describe "visiting the followers page" do
+          before { visit followers_user_path(user) }
+          it { should have_title('Sign in') }
+        end
+
+      end # in the users controller end
+
+      # [SecurityHole] Relationships Contoller test
+      # 'create','destoy'actions dosen't confirm 'every signedInUsesr access its' yet
+      describe "in the Relationships controller" do
+        describe "submitting to the create action" do
+          before { post relationships_path }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+
+
+        describe "submitting to the destoy action" do
+          before { delete relationship_path(1) }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+
+      end # in the Relationships controller end
 
     end #for non-signed-in users
 
